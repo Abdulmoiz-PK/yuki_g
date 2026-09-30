@@ -1,0 +1,547 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dear Yuki 💗 - A Love Letter For You</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        serif: ['"Dancing Script"', 'cursive', 'serif'],
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                    },
+                    colors: {
+                        roseGold: '#e8a598',
+                        romanticRed: '#d62828',
+                        deepBerry: '#701a31',
+                        blushPink: '#fbe0e0',
+                        softCream: '#fffbf7',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: linear-gradient(135deg, #fce4ec 0%, #f8bbd0 35%, #f48fb1 70%, #f06292 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        .font-cursive {
+            font-family: 'Dancing Script', cursive;
+        }
+
+        /* Glassmorphism styling */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border: 1.5px solid rgba(255, 255, 255, 0.6);
+            box-shadow: 0 20px 45px rgba(112, 26, 49, 0.18);
+        }
+
+        /* Heart Floating Animation Background */
+        .heart-particle {
+            position: fixed;
+            pointer-events: none;
+            z-index: 0;
+            animation: floatUp linear infinite;
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(105vh) scale(0.5) rotate(0deg);
+                opacity: 0;
+            }
+            20% {
+                opacity: 0.85;
+            }
+            80% {
+                opacity: 0.85;
+            }
+            100% {
+                transform: translateY(-10vh) scale(1.3) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Screen Transitions */
+        .screen {
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            position: absolute;
+            width: 100%;
+            left: 0;
+            top: 0;
+        }
+
+        .screen-hidden {
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(24px) scale(0.96);
+        }
+
+        .screen-active {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateY(0) scale(1);
+        }
+
+        /* Interactive Envelope FX */
+        .envelope-wrapper {
+            perspective: 1000px;
+        }
+
+        .envelope {
+            width: 280px;
+            height: 190px;
+            background-color: #e63946;
+            position: relative;
+            border-radius: 0 0 14px 14px;
+            cursor: pointer;
+            box-shadow: 0 15px 35px rgba(112, 26, 49, 0.25);
+            transition: transform 0.4s ease;
+        }
+
+        .envelope:hover {
+            transform: translateY(-5px) scale(1.02);
+        }
+
+        .envelope-flap {
+            position: absolute;
+            top: 0;
+            left: 0;
+            border-left: 140px solid transparent;
+            border-right: 140px solid transparent;
+            border-top: 105px solid #d62828;
+            transform-origin: top;
+            transition: transform 0.6s ease, z-index 0.2s ease;
+            z-index: 3;
+        }
+
+        .envelope-opened .envelope-flap {
+            transform: rotateX(180deg);
+            z-index: 1;
+        }
+
+        .envelope-pocket {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            border-left: 140px solid #f25c54;
+            border-right: 140px solid #f25c54;
+            border-bottom: 95px solid #e63946;
+            border-radius: 0 0 14px 14px;
+            z-index: 2;
+        }
+
+        .envelope-letter-preview {
+            position: absolute;
+            bottom: 10px;
+            left: 20px;
+            right: 20px;
+            height: 150px;
+            background: #fffbf7;
+            border-radius: 8px;
+            z-index: 1;
+            transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+            padding: 15px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+        }
+
+        .envelope-opened .envelope-letter-preview {
+            transform: translateY(-75px);
+            z-index: 4;
+        }
+
+        /* Pulsing Glow Animation */
+        @keyframes pulseGlow {
+            0%, 100% { box-shadow: 0 0 15px rgba(230, 57, 70, 0.4), 0 10px 25px rgba(112, 26, 49, 0.2); }
+            50% { box-shadow: 0 0 32px rgba(230, 57, 70, 0.85), 0 15px 38px rgba(112, 26, 49, 0.35); }
+        }
+
+        .pulse-glow {
+            animation: pulseGlow 2.5s infinite ease-in-out;
+        }
+
+        /* Sad Emoji Shake Animation */
+        @keyframes sadShake {
+            0% { transform: scale(0.5) translateY(10px) rotate(0deg); opacity: 0; }
+            20% { transform: scale(1.3) translateY(-10px) rotate(-10deg); opacity: 1; }
+            40% { transform: scale(1.1) translateY(-10px) rotate(10deg); opacity: 1; }
+            60% { transform: scale(1.2) translateY(-10px) rotate(-5deg); opacity: 1; }
+            80% { transform: scale(1) translateY(-5px) rotate(5deg); opacity: 1; }
+            100% { transform: scale(0.8) translateY(-20px) rotate(0deg); opacity: 0; }
+        }
+
+        .animate-sad-emoji {
+            animation: sadShake 1.8s forwards cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        /* Sparkle Confetti Keyframe */
+        @keyframes particleFly {
+            0% { transform: translate(0, 0) scale(1) rotate(0deg); opacity: 1; }
+            100% { transform: translate(var(--tx), var(--ty)) scale(0) rotate(720deg); opacity: 0; }
+        }
+
+        .confetti-particle {
+            position: fixed;
+            pointer-events: none;
+            z-index: 100;
+            animation: particleFly 1.5s forwards cubic-bezier(0.1, 0.8, 0.3, 1);
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center p-4 min-h-screen relative overflow-x-hidden">
+
+    <div id="heartContainer" class="fixed inset-0 pointer-events-none z-0"></div>
+
+    <!-- MAIN APP CONTAINER -->
+    <main class="w-full max-w-lg relative z-10 py-6 min-h-[600px]">
+
+        <!-- ==================== SCREEN 1: FIRST PAGE (DEAR YUKI 💗) ==================== -->
+        <section id="screen1" class="screen screen-active flex flex-col items-center justify-center text-center">
+            <div class="glass-card rounded-3xl p-8 w-full max-w-md mx-auto flex flex-col items-center">
+                
+                <div class="inline-block px-4 py-1.5 rounded-full bg-pink-100/90 text-deepBerry font-bold text-xs tracking-wider uppercase mb-4 shadow-sm border border-pink-200">
+                    ✨ A Special Message For You
+                </div>
+                
+                <!-- Explicit First Page Greeting as requested -->
+                <h1 class="text-3xl sm:text-4xl font-extrabold text-deepBerry mb-2 font-serif tracking-wide">
+                    Dear Yuki 💗
+                </h1>
+
+                <p class="text-gray-600 text-sm mb-8 font-medium">
+                    You have received a special romantic letter! Tap the envelope seal below to open your surprise 💕
+                </p>
+
+                <!-- Interactive Envelope Graphic -->
+                <div class="envelope-wrapper mb-8 my-2" onclick="openEnvelope()">
+                    <div id="envelope" class="envelope pulse-glow mx-auto">
+                        <div class="envelope-flap"></div>
+                        <div class="envelope-letter-preview flex flex-col items-center justify-center">
+                            <span class="text-2xl mb-1">💖</span>
+                            <span class="text-xs font-bold text-gray-700">For Yuki...</span>
+                        </div>
+                        <div class="envelope-pocket"></div>
+                        <!-- Wax Seal Icon -->
+                        <div id="waxSeal" class="absolute top-[45px] left-1/2 transform -translate-x-1/2 z-10 bg-rose-700 text-white w-12 h-12 rounded-full flex items-center justify-center shadow-lg border-2 border-rose-300 transition-transform hover:scale-110">
+                            <i class="fa-solid fa-heart text-xl text-rose-200"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <p class="text-xs text-rose-600 font-bold animate-bounce mt-2 flex items-center gap-1">
+                    <span>👇</span> Tap envelope to open
+                </p>
+            </div>
+        </section>
+
+
+        <!-- ==================== SCREEN 2: DO YOU LOVE ME? QUESTION ==================== -->
+        <section id="screen2" class="screen screen-hidden flex flex-col items-center justify-center text-center">
+            <div class="glass-card rounded-3xl p-8 w-full max-w-md mx-auto relative overflow-hidden">
+                
+                <!-- Cute Heart Graphic -->
+                <div class="w-20 h-20 mx-auto mb-4 bg-gradient-to-tr from-pink-400 to-rose-500 rounded-full flex items-center justify-center shadow-xl transform hover:rotate-12 transition-transform">
+                    <i class="fa-solid fa-heart-circle-check text-4xl text-white"></i>
+                </div>
+
+                <h2 class="text-3xl font-bold text-gray-800 mb-2 font-sans">Wait Yuki! 💭</h2>
+                <p class="text-gray-600 mb-6 text-sm sm:text-base font-medium">Before you unlock the full letter, answer one question:</p>
+
+                <h3 class="text-2xl font-bold text-deepBerry mb-8 font-serif sm:text-3xl">
+                    "Do you love me?" 💖
+                </h3>
+
+                <!-- Sad Emoji Reaction Container -->
+                <div id="sadReactionContainer" class="absolute inset-x-0 top-32 pointer-events-none flex justify-center z-20"></div>
+
+                <!-- Buttons Area Container -->
+                <div class="relative w-full min-h-[160px] flex items-center justify-center gap-4 flex-wrap" id="buttonArea">
+                    
+                    <!-- YES BUTTON (HIGH CONTRAST & CLEARLY READABLE TEXT) -->
+                    <button id="yesBtn" onclick="goToLetterScreen()" 
+                        class="px-9 py-3.5 rounded-full bg-gradient-to-r from-rose-600 via-pink-600 to-red-600 hover:from-rose-500 hover:to-red-500 text-white font-extrabold text-lg shadow-xl hover:shadow-rose-500/50 hover:scale-105 active:scale-95 transition-all duration-300 flex items-center gap-2 border-2 border-white focus:outline-none z-10">
+                        <span class="text-white font-extrabold tracking-wide drop-shadow-[0_1.5px_1.5px_rgba(0,0,0,0.7)] text-xl">Yes 💗</span>
+                    </button>
+
+                    <!-- NO BUTTON (SAD EMOJI & ESCAPE BEHAVIOR) -->
+                    <button id="noBtn" onmouseenter="triggerNoReaction()" onclick="triggerNoReaction()"
+                        class="px-6 py-3 rounded-full bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold text-base shadow-md transition-all duration-200 border border-gray-300 focus:outline-none">
+                        No 🙈
+                    </button>
+                </div>
+
+                <p id="playfulHint" class="text-xs text-rose-600 mt-4 min-h-[20px] font-bold italic"></p>
+            </div>
+        </section>
+
+
+        <!-- ==================== SCREEN 3: FINAL LOVE LETTER ==================== -->
+        <section id="screen3" class="screen screen-hidden flex flex-col items-center justify-center text-center">
+            <div class="glass-card rounded-3xl p-6 sm:p-8 w-full max-w-lg mx-auto relative text-left shadow-2xl">
+                
+                <!-- Toast Notification Container for "I Agree 💕" -->
+                <div id="toastBadge" class="hidden fixed top-6 left-1/2 transform -translate-x-1/2 z-50 bg-gradient-to-r from-rose-600 to-pink-600 text-white font-bold px-6 py-3 rounded-full shadow-2xl border-2 border-white flex items-center gap-2 text-sm sm:text-base animate-bounce">
+                    <span>You made my heart skip a beat! 💖🥰 Forever & Always 💕</span>
+                </div>
+
+                <!-- Decorative Top Banner -->
+                <div class="flex items-center justify-between border-b border-pink-200/80 pb-4 mb-6">
+                    <div class="flex items-center gap-2">
+                        <span class="w-3 h-3 rounded-full bg-rose-500 inline-block animate-ping"></span>
+                        <span class="text-xs font-bold tracking-wider text-rose-700 uppercase">For My Love</span>
+                    </div>
+                    <span class="text-xs text-gray-500 font-bold">Forever & Always</span>
+                </div>
+
+                <!-- Letter Content Area -->
+                <div class="prose prose-pink max-w-none space-y-4 text-gray-700 text-base leading-relaxed">
+                    <!-- Letter Header Greeting for Yuki -->
+                    <h2 class="font-serif text-3xl sm:text-4xl font-bold text-deepBerry leading-tight mb-2">
+                        Dear Yuki 💗
+                    </h2>
+
+                    <p id="letterBody" class="text-gray-700 font-sans text-sm sm:text-base leading-relaxed font-medium">
+                        From the moment you entered my life, everything became brighter, warmer, and endlessly meaningful. You bring a kind of magic into my world that words can barely capture, turning simple days into extraordinary memories.
+                        <br><br>
+                        Thank you for your smile, your warmth, and for being the sweetest chapter of my story. Every heartbeat reminds me of how lucky I am to share this journey with you. No matter where life takes us, my affection for you will only grow stronger.
+                    </p>
+
+                    <!-- Signature -->
+                    <div class="pt-6 text-right">
+                        <p class="text-xs text-gray-500 uppercase tracking-widest font-extrabold mb-1">With all my love,</p>
+                        <p class="font-serif text-2xl sm:text-3xl font-bold text-deepBerry">
+                            — Abdul Moiz ❤️
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Divider -->
+                <div class="my-6 border-t border-pink-200/80"></div>
+
+                <!-- "I AGREE 💕" CELEBRATION BUTTON (STAYS ON PAGE) -->
+                <div class="flex justify-center pt-1">
+                    <button id="agreeBtn" onclick="handleAgreeClick()" 
+                        class="px-8 py-3.5 rounded-full bg-gradient-to-r from-rose-500 via-pink-500 to-rose-600 text-white font-extrabold text-base shadow-lg hover:shadow-rose-400/60 hover:scale-105 active:scale-95 transition-all duration-300 flex items-center gap-2 border-2 border-white focus:outline-none">
+                        <span>I agree 💕</span>
+                    </button>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        // State variables
+        let currentScreen = 1;
+        let dodgeCount = 0;
+
+        // Playful texts when clicking/hovering No
+        const playfulHints = [
+            "Nice try! But you can't say no 😜",
+            "Are you sure? Try again! 🥺",
+            "The 'No' button is too shy! 🙈",
+            "Oops, it slipped away! 💕",
+            "Just tap 'Yes 💗' Yuki!"
+        ];
+
+        // Sad Emojis list
+        const sadEmojis = ['🥺', '😔', '💔', '😭', '😿'];
+
+        /* ================= BACKGROUND HEARTS ANIMATION ================= */
+        function createHeartParticles() {
+            const container = document.getElementById('heartContainer');
+            const heartSymbols = ['💖', '💕', '💗', '💓', '🌸', '✨'];
+            const particleCount = 22;
+
+            for (let i = 0; i < particleCount; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'heart-particle';
+                heart.innerText = heartSymbols[Math.floor(Math.random() * heartSymbols.length)];
+                
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.fontSize = (Math.random() * 16 + 12) + 'px';
+                heart.style.animationDuration = (Math.random() * 8 + 6) + 's';
+                heart.style.animationDelay = (Math.random() * 5) + 's';
+                
+                container.appendChild(heart);
+            }
+        }
+
+        /* ================= SCREEN TRANSITIONS ================= */
+        function showScreen(screenNumber) {
+            const screens = [
+                document.getElementById('screen1'),
+                document.getElementById('screen2'),
+                document.getElementById('screen3')
+            ];
+
+            screens.forEach((screen, index) => {
+                if (index + 1 === screenNumber) {
+                    screen.classList.remove('screen-hidden');
+                    screen.classList.add('screen-active');
+                } else {
+                    screen.classList.remove('screen-active');
+                    screen.classList.add('screen-hidden');
+                }
+            });
+
+            currentScreen = screenNumber;
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        /* ================= SCREEN 1: ENVELOPE OPEN ================= */
+        function openEnvelope() {
+            const envelope = document.getElementById('envelope');
+            const waxSeal = document.getElementById('waxSeal');
+
+            envelope.classList.add('envelope-opened');
+            if(waxSeal) waxSeal.style.opacity = '0';
+
+            setTimeout(() => {
+                showScreen(2);
+            }, 850);
+        }
+
+        /* ================= SCREEN 2: NO BUTTON SAD REACTION & DODGE ================= */
+        function triggerNoReaction() {
+            const noBtn = document.getElementById('noBtn');
+            const yesBtn = document.getElementById('yesBtn');
+            const hint = document.getElementById('playfulHint');
+            const sadContainer = document.getElementById('sadReactionContainer');
+
+            dodgeCount++;
+
+            // 1. SHOW SITTING SAD EMOJI WITH SHAKE ANIMATION
+            const sadEmojiElem = document.createElement('div');
+            const randomSad = sadEmojis[Math.floor(Math.random() * sadEmojis.length)];
+            sadEmojiElem.className = 'text-5xl font-bold animate-sad-emoji pointer-events-none drop-shadow-lg';
+            sadEmojiElem.innerText = randomSad;
+            
+            sadContainer.appendChild(sadEmojiElem);
+
+            // Remove emoji after 1.8 seconds smoothly
+            setTimeout(() => {
+                sadEmojiElem.remove();
+            }, 1800);
+
+            // 2. MOVE NO BUTTON RANDOM POSITIONS
+            const area = document.getElementById('buttonArea');
+            const rect = area.getBoundingClientRect();
+
+            const randomX = (Math.random() - 0.5) * (rect.width * 0.75);
+            const randomY = (Math.random() - 0.5) * 90;
+
+            noBtn.style.position = 'relative';
+            noBtn.style.transform = `translate(${randomX}px, ${randomY}px)`;
+
+            // 3. GROW YES BUTTON SLIGHTLY FOR FUN
+            const yesScale = Math.min(1.25, 1 + dodgeCount * 0.05);
+            yesBtn.style.transform = `scale(${yesScale})`;
+
+            // 4. SHOW HINT TEXT
+            const hintIndex = Math.min(dodgeCount - 1, playfulHints.length - 1);
+            hint.textContent = playfulHints[hintIndex];
+        }
+
+        /* ================= SCREEN 2 -> SCREEN 3 ================= */
+        function goToLetterScreen() {
+            createBurstEffect(18);
+            setTimeout(() => {
+                showScreen(3);
+            }, 300);
+        }
+
+        /* ================= SCREEN 3: "I AGREE 💕" CELEBRATION ================= */
+        function handleAgreeClick() {
+            // Trigger massive celebratory confetti particle burst across screen
+            createMassiveCelebration();
+
+            // Show Toast / Badge
+            const toast = document.getElementById('toastBadge');
+            toast.classList.remove('hidden');
+
+            setTimeout(() => {
+                toast.classList.add('hidden');
+            }, 3500);
+        }
+
+        /* ================= PARTICLE BURST EFFECTS ================= */
+        function createBurstEffect(count) {
+            const symbols = ['💗', '💕', '✨', '🌸', '💖'];
+            for (let i = 0; i < count; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'confetti-particle text-2xl';
+                particle.innerText = symbols[Math.floor(Math.random() * symbols.length)];
+                particle.style.left = '50vw';
+                particle.style.top = '50vh';
+
+                const angle = (i / count) * Math.PI * 2;
+                const distance = 100 + Math.random() * 120;
+                const tx = Math.cos(angle) * distance + 'px';
+                const ty = Math.sin(angle) * distance + 'px';
+
+                particle.style.setProperty('--tx', tx);
+                particle.style.setProperty('--ty', ty);
+
+                document.body.appendChild(particle);
+
+                setTimeout(() => particle.remove(), 1500);
+            }
+        }
+
+        function createMassiveCelebration() {
+            const symbols = ['💖', '💕', '💗', '✨', '🎉', '🌸', '❤️'];
+            const totalParticles = 40;
+
+            for (let i = 0; i < totalParticles; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'confetti-particle text-2xl sm:text-3xl';
+                particle.innerText = symbols[Math.floor(Math.random() * symbols.length)];
+                
+                // Random origins near center
+                const startX = 40 + Math.random() * 20;
+                const startY = 50 + Math.random() * 20;
+                particle.style.left = startX + 'vw';
+                particle.style.top = startY + 'vh';
+
+                const angle = Math.random() * Math.PI * 2;
+                const distance = 150 + Math.random() * 220;
+                const tx = Math.cos(angle) * distance + 'px';
+                const ty = Math.sin(angle) * distance + 'px';
+
+                particle.style.setProperty('--tx', tx);
+                particle.style.setProperty('--ty', ty);
+
+                document.body.appendChild(particle);
+
+                setTimeout(() => particle.remove(), 1500);
+            }
+        }
+
+        /* INITIALIZATION */
+        window.onload = function() {
+            createHeartParticles();
+        };
+    </script>
+</body>
+</html>
+```
